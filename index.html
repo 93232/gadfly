@@ -65,8 +65,7 @@
   <header class="topbar">
     <div class="audio-controls" role="group" aria-label="배경음악 컨트롤">
       <button id="toggle" type="button" aria-label="음악 재생" title="음악 재생">
-        <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path id="control-icon-path" d="M8 5v14l11-7z"/></svg>
       </button>
       <label class="volume-label" for="volume">VOL</label>
       <input id="volume" type="range" min="0" max="1" step="0.01" value="0.55" aria-label="음악 볼륨">
@@ -91,15 +90,16 @@
     const audio = document.getElementById('bgm');
     const toggle = document.getElementById('toggle');
     const volume = document.getElementById('volume');
-    const playIcon = document.getElementById('play-icon');
-    const pauseIcon = document.getElementById('pause-icon');
+    const controlIconPath = document.getElementById('control-icon-path');
 
     audio.volume = Number(volume.value);
 
     function syncControls() {
       const playing = !audio.paused;
-      playIcon.hidden = playing;
-      pauseIcon.hidden = !playing;
+      // 유튜브 방식: 음악 재생 중엔 일시정지(Ⅱ), 정지 중엔 재생(▶) 하나만 표시합니다.
+      controlIconPath.setAttribute('d', playing
+        ? 'M6 4h4v16H6zM14 4h4v16h-4z'
+        : 'M8 5v14l11-7z');
       toggle.setAttribute('aria-label', playing ? '음악 일시정지' : '음악 재생');
       toggle.title = playing ? '음악 일시정지' : '음악 재생';
     }
