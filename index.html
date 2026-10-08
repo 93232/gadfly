@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="뮤지컬 소크라테스 패러독스 공연 사진과 예매 안내">
+  <title>소크라테스 패러독스</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23090909'/%3E%3Ctext x='16' y='25' text-anchor='middle' font-family='sans-serif' font-size='28' font-weight='bold' fill='%23c6ff35'%3E%3F%3C/text%3E%3C/svg%3E">
+  <style>
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; background: #090909; }
+    body { margin: 0; font-family: system-ui, -apple-system, 'Malgun Gothic', sans-serif; }
+    main { width: 100%; max-width: 2048px; margin: 0 auto; }
+    .photo { display: block; width: 100%; height: auto; }
+    .hero { position: relative; }
+    .ticket-link { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: clamp(76px, 8vw, 116px); aspect-ratio: 1.42; display: grid; place-items: center; color: #fff; background: #f50909; border-radius: 22%; box-shadow: 0 6px 28px #0009; transition: background .18s, box-shadow .18s; }
+    .ticket-link:hover { background: #ff2828; box-shadow: 0 8px 38px #000b; }
+    .ticket-link svg { width: 40%; height: 48%; margin-left: 6%; }
+    :focus-visible { outline: 3px solid #c6ff35; outline-offset: 5px; }
+    .music-panel { position: fixed; z-index: 10; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; max-width: calc(100vw - 28px); border: 1px solid #ffffff30; border-radius: 16px; background: #111e; box-shadow: 0 4px 22px #0006; backdrop-filter: blur(12px); color: #fff; }
+    .music-toggle { flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid #ffffff25; border-radius: 50%; background: #ffffff12; color: #c6ff35; cursor: pointer; }
+    .music-toggle:hover { background: #ffffff22; }
+    .music-toggle svg { width: 20px; height: 20px; }
+    .music-info { min-width: 0; }
+    .track-title { margin: 0 0 5px; font-size: 14px; font-weight: 650; }
+    .volume-row { display: flex; align-items: center; gap: 8px; }
+    .speaker { width: 16px; height: 16px; flex-shrink: 0; color: #ccc; }
+    #volume { width: 98px; height: 24px; margin: 0; accent-color: #c6ff35; cursor: pointer; }
+    #volume-value { min-width: 3ch; font-size: 12px; color: #cfcfcf; font-variant-numeric: tabular-nums; }
+    .music-status { position: absolute; right: 0; top: calc(100% + 7px); padding: 7px 11px; border: 1px solid #ffffff25; border-radius: 8px; background: #111e; font-size: 14px; line-height: 1.4; white-space: nowrap; }
+    [hidden] { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    @media (max-width: 480px) {
+      .music-panel { top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); gap: 9px; padding: 7px 10px 7px 7px; border-radius: 13px; }
+      #volume { width: 76px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .ticket-link { transition: none; } }
+  </style>
+</head>
+<body>
+  <main aria-label="소크라테스 패러독스 공연 사진">
+    <section class="hero" aria-label="공연 예매">
+      <img class="photo" src="./1.png" width="2048" height="1366" alt="소크라테스 패러독스 공연 사진 1" fetchpriority="high">
+      <!-- 예매 주소는 아래 href에서 변경할 수 있습니다. -->
+      <a class="ticket-link" href="https://nol.yanolja.com/ticket/products/26010086" aria-label="소크라테스 패러독스 예매 페이지로 이동" title="공연 예매하기">
+        <svg viewBox="0 0 30 36" aria-hidden="true"><path d="M2 2L29 18L2 34Z" fill="currentColor"/></svg>
+      </a>
+    </section>
+    <img class="photo" src="./2.png" width="2048" height="1366" alt="소크라테스 패러독스 공연 사진 2" loading="lazy">
+    <img class="photo" src="./3.png" width="2048" height="1366" alt="소크라테스 패러독스 공연 사진 3" loading="lazy">
+    <img class="photo" src="./4.png" width="2048" height="1366" alt="소크라테스 패러독스 공연 사진 4" loading="lazy">
+  </main>
+
+  <aside class="music-panel" aria-label="배경음악 제어">
+    <button class="music-toggle" id="music-toggle" type="button" aria-label="배경음악 재생" title="배경음악 재생">
+      <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4L21 12L7 20Z" fill="currentColor"/></svg>
+      <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M6 4H10V20H6ZM14 4H18V20H14Z" fill="currentColor"/></svg>
+    </button>
+    <div class="music-info">
+      <p class="track-title">속지마 · BGM</p>
+      <div class="volume-row">
+        <svg class="speaker" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9H8L13 5V19L8 15H4Z"/><path d="M17 8a6 6 0 0 1 0 8M20 5a10 10 0 0 1 0 14"/></svg>
+        <label class="sr-only" for="volume">배경음악 볼륨</label>
+        <input id="volume" type="range" min="0" max="100" value="65" step="1" aria-valuetext="65퍼센트">
+        <output id="volume-value" for="volume">65</output>
+      </div>
+    </div>
+    <div class="music-status" id="music-status" role="status" aria-live="polite" hidden></div>
+  </aside>
+
+  <audio id="bgm" src="./bgm.mp3" autoplay loop preload="auto" playsinline></audio>
+  <noscript><p>음악 제어 기능을 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p><audio src="./bgm.mp3" controls loop></audio></noscript>
+  <script>
+    (() => {
+      'use strict';
+      const audio = document.getElementById('bgm');
+      const toggle = document.getElementById('music-toggle');
+      const slider = document.getElementById('volume');
+      const output = document.getElementById('volume-value');
+      const status = document.getElementById('music-status');
+      const panel = document.querySelector('.music-panel');
+      let volume = Number(slider.value) / 100;
+      let waitingForGesture = true;
+      let userPaused = false;
+      let context;
+      let gain;
+      let attempt = 0;
+      audio.volume = volume;
+
+      function showStatus(message) {
+        status.textContent = message;
+        status.hidden = !message;
+      }
+
+      function syncButton() {
+        const playing = !audio.paused && !audio.ended;
+        document.getElementById('play-icon').hidden = playing;
+        document.getElementById('pause-icon').hidden = !playing;
+        const label = playing ? '배경음악 일시정지' : '배경음악 재생';
+        toggle.setAttribute('aria-label', label);
+        toggle.title = label;
+      }
+
+      // Web Audio의 GainNode로 모바일에서도 페이지 내 볼륨을 조절합니다.
+      // 자동재생 시에는 기본 audio를 사용하고, 첫 사용자 입력 때 연결합니다.
+      function unlockAudio() {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!context && AudioContextClass) {
+          try {
+            context = new AudioContextClass();
+            gain = context.createGain();
+            gain.gain.value = volume;
+            const source = context.createMediaElementSource(audio);
+            source.connect(gain);
+            gain.connect(context.destination);
+            audio.volume = 1;
+          } catch (_) {
+            if (context) context.close().catch(() => {});
+            context = null;
+            gain = null;
+            audio.volume = volume;
+          }
+        }
+        if (context && context.state === 'suspended') {
+          context.resume().catch(() => showStatus('재생 버튼을 다시 눌러 주세요.'));
+        }
+      }
+
+      function startMusic(fromGesture = false) {
+        if (userPaused) return;
+        const currentAttempt = ++attempt;
+        if (fromGesture) unlockAudio();
+        // play()는 사용자 입력의 호출 흐름 안에서 즉시 실행해야 합니다.
+        const result = audio.play();
+        if (result) result.then(() => {
+          if (currentAttempt !== attempt) return;
+          waitingForGesture = false;
+          showStatus('');
+          syncButton();
+        }).catch(error => {
+          if (currentAttempt !== attempt || userPaused) return;
+          waitingForGesture = true;
+          showStatus(error.name === 'NotAllowedError'
+            ? '화면을 터치하면 음악이 시작됩니다.'
+            : '음악을 재생할 수 없습니다. 다시 눌러 주세요.');
+          syncButton();
+        });
+      }
+
+      toggle.addEventListener('click', () => {
+        if (!audio.paused) {
+          ++attempt;
+          userPaused = true;
+          waitingForGesture = false;
+          audio.pause();
+          showStatus('');
+        } else {
+          userPaused = false;
+          startMusic(true);
+        }
+      });
+
+      function applyVolume() {
+        volume = Number(slider.value) / 100;
+        output.value = slider.value;
+        slider.setAttribute('aria-valuetext', `${slider.value}퍼센트`);
+        if (gain) gain.gain.setValueAtTime(volume, context.currentTime);
+        else audio.volume = volume;
+      }
+      slider.addEventListener('input', () => {
+        unlockAudio();
+        applyVolume();
+        if (waitingForGesture && !userPaused) startMusic(true);
+      });
+
+      function onFirstInteraction(event) {
+        if (panel.contains(event.target)) return;
+        if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
+        if (waitingForGesture && !userPaused) startMusic(true);
+      }
+      document.addEventListener('click', onFirstInteraction);
+      document.addEventListener('keydown', onFirstInteraction);
+      audio.addEventListener('playing', () => {
+        waitingForGesture = false;
+        showStatus('');
+        syncButton();
+      });
+      audio.addEventListener('pause', syncButton);
+      audio.addEventListener('error', () => {
+        showStatus('음원 파일을 불러올 수 없습니다.');
+        syncButton();
+      });
+      startMusic();
+    })();
+  </script>
+</body>
+</html>
